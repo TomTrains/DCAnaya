@@ -1,78 +1,29 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>DCA Rebuy Planner</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 460px;
-      margin: auto;
-      padding: 20px;
-      background: #f5f7fb;
-    }
-    h2 { text-align: center; }
-    input, button {
-      width: 100%;
-      padding: 12px;
-      margin: 6px 0;
-      font-size: 16px;
-    }
-    button {
-      border: none;
-      border-radius: 6px;
-      color: white;
-    }
-    .calc { background: #1565c0; }
-    .reset { background: #c62828; }
-    .box {
-      background: white;
-      padding: 12px;
-      border-radius: 6px;
-      margin-top: 10px;
-    }
-    .result {
-      font-size: 16px;
-      line-height: 1.6;
-    }
-  </style>
-</head>
+<h3>DCA Wallet Amount Calculator</h3>
 
-<body>
+<input type="number" id="p1" placeholder="Initial Entry Price">
+<input type="number" id="a1" placeholder="Initial Amount ($)">
+<input type="number" id="p2" placeholder="Now Price (Rebuy)">
+<input type="number" id="pe" placeholder="Expected Price">
 
-<h2>DCA / Rebuy Calculator</h2>
+<button onclick="calcDCA()">Calculate</button>
 
-<div class="box">
-  <h4>Trade Inputs</h4>
-  <input type="number" id="entry" placeholder="Initial Entry Price">
-  <input type="number" id="amount" placeholder="Initial Amount ($)">
-  <input type="number" id="target" placeholder="Target Profit %">
-  <input type="number" id="now" placeholder="Now Price (DCA price)">
-  <input type="number" id="expected" placeholder="Expected Price">
-  <input type="number" id="leverage" placeholder="Leverage (e.g. 10)">
-</div>
-
-<button class="calc" onclick="calculate()">Calculate</button>
-<button class="reset" onclick="resetForm()">Reset</button>
-
-<div class="box result" id="output"></div>
+<div id="result"></div>
 
 <script>
-function calculate() {
-  let entry = Number(entry.value);
-  let amount = Number(amount.value);
-  let target = Number(target.value) / 100;
-  let now = Number(now.value);
-  let expected = Number(expected.value);
-  let leverage = Number(leverage.value);
+function calcDCA() {
+  let P1 = Number(p1.value);
+  let A1 = Number(a1.value);
+  let P2 = Number(p2.value);
+  let Pe = Number(pe.value);
 
-  if (!entry || !amount || !now || !expected || !leverage) {
-    output.innerHTML = "Please fill all fields.";
+  if (!(P2 < Pe && Pe < P1)) {
+    result.innerHTML = "Ensure: Now Price < Expected Price < Initial Price";
     return;
   }
 
-  // Initial quantity
-  let qtyInitial = (amount * leverage) / entry;
+  let A2 = A1 * (P1 - Pe) / (Pe - P2);
 
-  // Adjusted amount for DCA
-  let adjustedAmoun
+  result.innerHTML =
+    "Wallet amount needed for rebuy: <b>$" + A2.toFixed(2) + "</b>";
+}
+</script>
