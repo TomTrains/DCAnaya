@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>DCA / Rebuy Calculator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 420px;
+      margin: auto;
+      padding: 20px;
+    }
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin: 6px 0;
+      font-size: 16px;
+    }
+    button {
+      border: none;
+      border-radius: 5px;
+      color: white;
+    }
+    .calc { background-color: #1565c0; }
+    .reset { background-color: #c62828; }
+    .result {
+      margin-top: 15px;
+      padding: 10px;
+      background: #eef4ff;
+      border-radius: 5px;
+      font-size: 17px;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>Rebuy / Dollar Cost Average Calculator</h2>
+
+<h4>Buy 1</h4>
+<input type="number" placeholder="Price" id="p1">
+<input type="number" placeholder="Quantity" id="q1">
+
+<h4>Buy 2</h4>
+<input type="number" placeholder="Price" id="p2">
+<input type="number" placeholder="Quantity" id="q2">
+
+<h4>Buy 3</h4>
+<input type="number" placeholder="Price" id="p3">
+<input type="number" placeholder="Quantity" id="q3">
+
+<h4>Buy 4</h4>
+<input type="number" placeholder="Price" id="p4">
+<input type="number" placeholder="Quantity" id="q4">
+
+<h4>Buy 5</h4>
+<input type="number" placeholder="Price" id="p5">
+<input type="number" placeholder="Quantity" id="q5">
+
+<button class="calc" onclick="calculate()">Calculate</button>
+<button class="reset" onclick="resetForm()">Reset</button>
+
+<div class="result" id="output"></div>
+
+<script>
+function calculate() {
+  let prices = [p1,p2,p3,p4,p5].map(p => Number(p.value));
+  let qtys   = [q1,q2,q3,q4,q5].map(q => Number(q.value));
+
+  let totalCost = 0;
+  let totalQty = 0;
+
+  for (let i = 0; i < 5; i++) {
+    totalCost += prices[i] * qtys[i];
+    totalQty += qtys[i];
+  }
+
+  if (totalQty === 0) {
+    document.getElementById("output").innerHTML = "Please enter at least one buy.";
+    return;
+  }
+
+  let avgPrice = totalCost / totalQty;
+
+  document.getElementById("output").innerHTML =
+    "Total Quantity: <b>" + totalQty.toFixed(4) + "</b><br>" +
+    "Total Invested: <b>$" + totalCost.toFixed(2) + "</b><br>" +
+    "Average Buy Price: <b>$" + avgPrice.toFixed(4) + "</b>";
+}
+
+function resetForm() {
+  document.querySelectorAll("input").forEach(i => i.value = "");
+  document.getElementById("output").innerHTML = "";
+}
+</script>
+
+</body>
+</html>
